@@ -8,8 +8,13 @@ import java.sql.*;
 
 public class UserDAO {
 
+    private PasswordEncoder encoder;
 
-    PasswordEncoder encoder = new BCryptPasswordEncoder();
+    public UserDAO() {
+        this.encoder = new BCryptPasswordEncoder();;
+    }
+
+
 
     public boolean verify(User user) {
         try {
@@ -42,5 +47,37 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public User login(User user) {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/link_stash","root","senha");
+            String sql = "SELECT * FROM user" +
+                         "WHERE 'email' = '" + user.getEmail() + "' AND 'password' = '" + encoder.encode(user.getPassword()) + "'";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()){
+                String name = rs.getString("name");
+                String lastName = rs.getString("last_name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                User loggedUser = new User();
+
+                loggedUser.setActive(true);
+                loggedUser.setName(name);
+                loggedUser.setLastName(lastName);
+                loggedUser.setEmail(email);
+                loggedUser.setPassword(password);
+                return loggedUser;
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -22,9 +22,21 @@ public class UserController {
 
         if (user != null) {
             userService.registerUser(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
-        // TODO: call persistence layer to update
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+    }
+
+
+    //TODO refactor login!
+    @CrossOrigin
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<User> login(@RequestBody User user){
+        if (user != null){
+            User loggedUser = userService.loginUser(user);
+            return new ResponseEntity<>(loggedUser,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
     }
 
 }
