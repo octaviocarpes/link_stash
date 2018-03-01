@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import sun.misc.BASE64Decoder;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Base64;
 
 
 public class UserDAO {
@@ -42,8 +43,10 @@ public class UserDAO {
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/link_stash","root","senha");
-            String sql = "insert into user(name,last_name,email, password,active)" +
-                         "values('"+user.getName()+"','"+user.getLastName()+"','"+user.getEmail()+"','"+ encoder.encode(user.getPassword())+"',"+user.isActive()+")";
+            String sql = null;
+
+            sql = "insert into user(name,last_name,email, password,active)" +
+                  "values('"+user.getName()+"','"+user.getLastName()+"','"+user.getEmail()+"','"+ encoder.encode(user.getPassword())+"',"+user.isActive()+")";
 
             Statement statement = connection.createStatement();
             statement.execute(sql);
@@ -76,17 +79,12 @@ public class UserDAO {
                 loggedUser.setEmail(emailDB);
                 loggedUser.setPassword(passwordDB);
 
-                try {
-                    if (encoder.matches(new String (decoder.decodeBuffer(password)), passwordDB)){
-                        return loggedUser;
-                    }else{
-                        return null;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (encoder.matches(password, passwordDB)){
+                    return loggedUser;
+                }else{
+                    return null;
                 }
             }
-
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
