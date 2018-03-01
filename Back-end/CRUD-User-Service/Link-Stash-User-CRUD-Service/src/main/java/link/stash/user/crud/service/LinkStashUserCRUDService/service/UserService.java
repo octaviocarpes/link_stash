@@ -23,10 +23,7 @@ public class UserService {
         return false;
     }
 
-    public User loginUser(User user) {
-        if (verifyUser(user) == false){
-            return userDAO.login(user);
-        }
-        return null;
+    public User loginUser(String email, String password) {
+        return userDAO.login(email,password);
     }
 }

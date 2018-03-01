@@ -3,15 +3,21 @@ package link.stash.user.crud.service.LinkStashUserCRUDService.dao;
 import link.stash.user.crud.service.LinkStashUserCRUDService.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import sun.misc.BASE64Decoder;
 
+import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Base64;
 
 public class UserDAO {
 
     private PasswordEncoder encoder;
+    private BASE64Decoder decoder;
 
     public UserDAO() {
-        this.encoder = new BCryptPasswordEncoder();;
+        this.encoder = new BCryptPasswordEncoder();
+        this.decoder = new BASE64Decoder();
     }
 
 
@@ -49,11 +55,11 @@ public class UserDAO {
         }
     }
 
-    public User login(User user) {
+    public User login(String email, String password) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/link_stash","root","senha");
-            String sql = "SELECT * FROM user" +
-                         "WHERE 'email' = '" + user.getEmail() + "' AND 'password' = '" + encoder.encode(user.getPassword()) + "'";
+            String sql = "SELECT * FROM user " +
+                         "WHERE email = '" + email + "'";
 
             PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -62,16 +68,25 @@ public class UserDAO {
             while (rs.next()){
                 String name = rs.getString("name");
                 String lastName = rs.getString("last_name");
-                String email = rs.getString("email");
-                String password = rs.getString("password");
+                String emailDB = rs.getString("email");
+                String passwordDB = rs.getString("password");
                 User loggedUser = new User();
 
                 loggedUser.setActive(true);
                 loggedUser.setName(name);
                 loggedUser.setLastName(lastName);
-                loggedUser.setEmail(email);
-                loggedUser.setPassword(password);
-                return loggedUser;
+                loggedUser.setEmail(emailDB);
+                loggedUser.setPassword(passwordDB);
+
+                try {
+                    if (encoder.matches(new String (decoder.decodeBuffer(password)), passwordDB)){
+                        return loggedUser;
+                    }else{
+                        return null;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             connection.close();
