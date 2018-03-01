@@ -4,11 +4,9 @@ import link.stash.user.crud.service.LinkStashUserCRUDService.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sun.misc.BASE64Decoder;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Base64;
+
 
 public class UserDAO {
 
