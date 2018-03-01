@@ -5,10 +5,7 @@ import link.stash.user.crud.service.LinkStashUserCRUDService.model.User;
 import link.stash.user.crud.service.LinkStashUserCRUDService.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserService userService = new UserService();
-    PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
