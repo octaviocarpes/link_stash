@@ -4,19 +4,36 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		// tag::build[]
+		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+		// end::build[]
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+// tag::plugin[]
+apply plugin: 'com.palantir.docker'
+// end::plugin[]
 
 group = 'link.stash.user.crud.service'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
+// tag::task[]
+docker {
+	name "${project.group}/${jar.baseName}"
+	files jar.archivePath
+	buildArgs(['JAR_FILE': "${jar.archiveName}"])
+}
+// end::task[]
 
 repositories {
 	mavenCentral()
