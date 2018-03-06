@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="fade" mode="out-in" v-on:after-enter="afterEnter" appear>
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -32,5 +34,13 @@ export default {
   margin-top: 60px;
   display: flex;
   justify-content: center;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.0s
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 </style>

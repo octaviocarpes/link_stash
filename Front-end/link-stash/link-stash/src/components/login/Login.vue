@@ -1,84 +1,105 @@
 <template>
-        <div id="login-container">
-             <h1>Link Stash!</h1>
-            <form action="">
-                <input id="login-input" class="input" type="text" placeholder="Email">
-                <input id="password-input" class="input" type="password" placeholder="Password">
-                <div class="buttons">
-                    <button id="login-button" class="button login-button" type="submit">Login</button>
-                    <button id="register-button" class="button register-button" type="submit">Register</button>
-                </div>
-            </form>
-            
-        </div>
+        
+            <div id="round-box">
+                <h1>Link Stash!</h1>
+                <form action="">
+                    <div id="input-set">
+                        <input type="text" name="email" placeholder="Email" class="input login-input">
+                        <input type="password" name="password" placeholder="Password" class="input password-input">
+                    </div>
+                    <div id="button-box">
+                        <button class="button" type="submit">Sign in</button>
+                        <button type="button" class="button" onclick="window.location.href='/register'">Register</button>
+                    </div>
+                </form>
+                <!-- <slider v-on:click="move('right')"/> -->
+            </div> 
+        
 </template>
 
 <script>
+
+import Slider from '../shared/Slider.vue';
+
 export default {
+
+    components:{
+        'slider':Slider
+    },
     
-    
+    data(){
+        return {
+
+        }
+    }
     
 }
 </script>
 <style>
-    #login-container{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 400px;
-        height: 400px;
-        border-radius: 10px;
+    #round-box{
         background-color: white;
+        padding: 4%;
+        border-radius: 10px;
+        width: 50%;
     }
-
+    
     .input{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 10px;
-        height: 30px;
-        border-radius: 2px, 2px, 2px, 2px;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        font-size: 12pt;
+        height: 5%;
+        margin:7%;
     }
 
-    form{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    input:focus{
+        outline: 0;
     }
 
-    .buttons{
-        width: 90%;
-        height: 25px;
-        margin: 10px;
+    .login-input{
+        margin: 5%;
+    }
+
+    .password-input{
+        margin:5%;
+    }
+
+    #input-set{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #button-box{
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding: 15px;
+        padding: 5%;
     }
-    
+
     .button{
-        width: 50%;
+        width: 45%;
+        border-radius: 10px;
+        font-size: 12pt;
+        color: white;
+        background-color: steelblue;
         height: 35px;
-        border-radius: 20px;
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        font-size: 19pt;
+    }
+
+    .button:focus{
+        outline: 0;
     }
 
     .button:hover{
-        opacity: .8;
+        opacity: 0.8;
     }
 
-    .register-button{
-        background-color: slategrey;
+    a{
+        text-decoration: none;
+        width: 100%;
+    }
+
+    a:visited{
         color: white;
-        margin: 5px;
     }
 
-    .login-button{
-        background-color: royalblue;
-        color: white;
-        margin: 5px;
-    }
-
-    
 </style>
