@@ -3,10 +3,16 @@ import App from './App.vue';
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import {routes} from './routes';
+import axios from "axios"
+
+
+ 
 Vue.config.productionTip = false
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(axios);
+
 
 const router = new VueRouter({ 
   routes,

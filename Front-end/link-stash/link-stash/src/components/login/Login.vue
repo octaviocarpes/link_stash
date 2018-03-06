@@ -4,11 +4,11 @@
                 <h1>Link Stash!</h1>
                 <form action="">
                     <div id="input-set">
-                        <input type="text" name="email" placeholder="Email" class="input login-input">
-                        <input type="password" name="password" placeholder="Password" class="input password-input">
+                        <input id="user-email-text" type="text" name="email" placeholder="Email" v-model="user.userEmail" class="input login-input">
+                        <input id="user-password-text" type="password" name="password" placeholder="Password" v-model="user.userPassword" class="input password-input">
                     </div>
                     <div id="button-box">
-                        <button class="button" type="submit">Sign in</button>
+                        <button class="button" type="button" :click="performLoginPost">Sign in</button>
                         <button type="button" class="button" onclick="window.location.href='/register'">Register</button>
                     </div>
                 </form>
@@ -19,6 +19,7 @@
 
 <script>
 
+import axios from 'axios';
 import Slider from '../shared/Slider.vue';
 
 export default {
@@ -27,9 +28,20 @@ export default {
         'slider':Slider
     },
     
+    methods:{
+        performLoginPost() {
+            axios.post('http://localhost:8080/login', this.user)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+        }
+    },
+
     data(){
         return {
-
+            user: {
+                userEmail: '',
+                userPassword: ''
+            }
         }
     }
     
